@@ -61,7 +61,6 @@ jobs:
       - name: Install packages
         run: |
           sudo apt-get update && sudo apt-get install --no-install-recommends -y build-essential git pkg-config libpq-dev
-          bundle install --jobs 4 --retry 3
 
       - name: Checkout code
         uses: actions/checkout@v4
