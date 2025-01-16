@@ -4,7 +4,7 @@ describe Api::Cars::IndexContract do
   subject(:contract) { described_class.new }
 
   describe '#call' do
-    subject(:validation_result) { contract.call(**params) }
+    subject(:validation_result) { contract.call(params) }
 
     let(:params) { valid_params }
     let(:valid_params) do
@@ -15,8 +15,18 @@ describe Api::Cars::IndexContract do
       }
     end
 
-    it "returns success for valid input" do
-      expect(validation_result).to be_success
+    context 'success' do
+      it "returns success for valid input" do
+        expect(validation_result).to be_success
+      end
+
+      context 'without attributes' do
+        let(:params) { {} }
+
+        specify do
+          expect(validation_result).to be_success
+        end
+      end
     end
 
     describe 'failures' do
