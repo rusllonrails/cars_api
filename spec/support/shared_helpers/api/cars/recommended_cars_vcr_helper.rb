@@ -1,4 +1,4 @@
-RSpec.shared_context 'with recommended cars VCR setup' do
+module RecommendedCarsVcrHelper
   def match_requests_on
     [
       :method,

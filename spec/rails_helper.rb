@@ -35,7 +35,6 @@ rescue ActiveRecord::PendingMigrationError => e
   abort e.to_s.strip
 end
 
-
 VCR.configure do |config|
   config.cassette_library_dir = "fixtures/vcr_cassettes"
   config.hook_into :webmock
@@ -79,3 +78,16 @@ RSpec.configure do |config|
   # arbitrary gems may also be filtered via:
   # config.filter_gems_from_backtrace("gem name")
 end
+
+# Temporary Monkey patch for issue with type DB migration in Test env
+ActiveRecord::Base.connection.execute <<~SQL.squish
+  DO $$
+  BEGIN
+    IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'recommended_cars_json_type') THEN
+      CREATE TYPE recommended_cars_json_type AS
+        (
+          car_id int, rank_score float8
+        );
+    END IF;
+  END$$;
+SQL

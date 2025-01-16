@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 describe Api::Cars::RecommendedService do
-  subject(:action) { described_class.new(user.id) }
+  include RecommendedCarsVcrHelper
 
-  include_context 'with recommended cars VCR setup'
+  subject(:action) { described_class.new(user.id) }
 
   let(:user) { create(:user) }
 
