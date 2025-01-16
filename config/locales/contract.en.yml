@@ -1,0 +1,6 @@
+en:
+  contract:
+    errors:
+      rules:
+        price_max:
+          cannot_be_less_or_equal_to_price_min: 'cannot be less than or equal to price_min'

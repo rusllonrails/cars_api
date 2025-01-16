@@ -1,0 +1,3 @@
+---
+recommendations_api:
+  base_uri: 'https://bravado-images-production.s3.amazonaws.com'
