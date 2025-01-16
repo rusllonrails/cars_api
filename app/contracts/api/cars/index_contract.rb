@@ -8,12 +8,12 @@ module Api
       end
 
       rule(:price_max) do
-        key.failure(:cannot_be_less_or_equal_to_price_min) if price_max_lte_price_max?(values)
+        key.failure(:cannot_be_less_or_equal_to_price_min) if price_max_lteq_price_min?(values)
       end
 
       private
 
-      def price_max_lte_price_max?(values)
+      def price_max_lteq_price_min?(values)
         values[:price_min] &&
           values[:price_max] &&
           values[:price_max].to_i <= values[:price_min].to_i
