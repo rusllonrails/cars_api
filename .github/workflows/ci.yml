@@ -1,4 +1,4 @@
-name: Ruby
+name: CI
 
 on:
   push:
@@ -12,8 +12,38 @@ env:
   POSTGRES_PASSWORD: password
 
 jobs:
-  tests:
-    name: Tests
+  scan_ruby:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: .ruby-version
+          bundler-cache: true
+
+      - name: Scan for common Rails security vulnerabilities using static analysis
+        run: bin/brakeman --no-pager
+
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: .ruby-version
+          bundler-cache: true
+
+      - name: Lint code for consistent style
+        run: bin/rubocop -f github
+
+  test:
     runs-on: ubuntu-latest
 
     services:
@@ -28,20 +58,21 @@ jobs:
           --health-timeout 5s
           --health-retries 5
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v2
+      - name: Install packages
+        run: |
+          sudo apt-get update && sudo apt-get install --no-install-recommends -y build-essential git pkg-config libpq-dev
+          bundle install --jobs 4 --retry 3
 
-      - name: Setup Ruby
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby
         uses: ruby/setup-ruby@v1
         with:
-          ruby-version: 3.3.5
+          ruby-version: .ruby-version
           bundler-cache: true
 
-      - name: Install dependencies
-        run: |
-          sudo apt-get update && sudo apt-get -yqq install libpq-dev
-          bundle install --jobs 4 --retry 3
-      - name: Run Tests
+      - name: Run tests
         env:
           RAILS_ENV: test
           PGHOST: localhost
