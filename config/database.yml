@@ -1,21 +1,21 @@
 default: &default
   adapter: postgresql
-  username: <%= ENV.fetch('CARS_API_POSTGRES_USERNAME', 'cars_api') %>
-  password: <%= ENV.fetch('CARS_API_POSTGRES_PASSWORD', 'cars_api_password') %>
+  username: <%= ENV.fetch('POSTGRES_USER', 'cars_api') %>
+  password: <%= ENV.fetch("POSTGRES_PASSWORD", 'cars_api_password') %>
   min_messages: WARNING
   reconnect: true
   pool: 50
   encoding: unicode
-  host: <%= ENV.fetch('CARS_API_POSTGRES_HOST', 'localhost') %>
-  port: <%= ENV.fetch('CARS_API_POSTGRES_PORT', '5432') %>
-  database: <%= ENV.fetch('CARS_API_DATABASE_NAME', 'cars_api_development') %>
+  host: <%= ENV.fetch('POSTGRES_HOST', 'localhost') %>
+  port: <%= ENV.fetch('POSTGRES_PORT', '5432') %>
+  database: <%= ENV.fetch('DATABASE_NAME', 'cars_api_development') %>
 
 development:
   <<: *default
 
 test:
   <<: *default
-  database: cars_api_test
+  database: <%= ENV.fetch('POSTGRES_DB', 'cars_api_test') %>
 
 staging:
   <<: *default
