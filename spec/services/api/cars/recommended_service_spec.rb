@@ -12,15 +12,15 @@ describe Api::Cars::RecommendedService do
 
     let(:expected_array) do
       [
-        {"car_id"=>179, "rank_score"=>0.945},
-        {"car_id"=>5, "rank_score"=>0.4552},
-        {"car_id"=>13, "rank_score"=>0.567},
-        {"car_id"=>97, "rank_score"=>0.9489},
-        {"car_id"=>32, "rank_score"=>0.0967},
-        {"car_id"=>176, "rank_score"=>0.0353},
-        {"car_id"=>177, "rank_score"=>0.1657},
-        {"car_id"=>36, "rank_score"=>0.7068},
-        {"car_id"=>103, "rank_score"=>0.4729}
+        { "car_id" => 179, "rank_score" => 0.945 },
+        { "car_id" => 5, "rank_score" => 0.4552 },
+        { "car_id" => 13, "rank_score" => 0.567 },
+        { "car_id" => 97, "rank_score" => 0.9489 },
+        { "car_id" => 32, "rank_score" => 0.0967 },
+        { "car_id" => 176, "rank_score" => 0.0353 },
+        { "car_id" => 177, "rank_score" => 0.1657 },
+        { "car_id" => 36, "rank_score" => 0.7068 },
+        { "car_id" => 103, "rank_score" => 0.4729 }
       ]
     end
     let(:cache_key) { "#{described_class::CACHE_KEY_PREFIX}#{user.id}" }

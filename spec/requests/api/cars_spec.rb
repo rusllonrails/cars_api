@@ -42,8 +42,8 @@ RSpec.describe 'GET /api/v1/users/:user_id/cars', type: :request do
     end
     let(:errors) do
       {
-        price_max: ['must be an integer'],
-        price_min: ['must be an integer']
+        price_max: [ 'must be an integer' ],
+        price_min: [ 'must be an integer' ]
       }.with_indifferent_access
     end
 

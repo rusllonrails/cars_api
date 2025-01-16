@@ -57,8 +57,8 @@ RSpec.describe Api::Cars::IndexInteractor do
           end
           let(:errors) do
             {
-              price_max: ['must be an integer'],
-              price_min: ['must be an integer']
+              price_max: [ 'must be an integer' ],
+              price_min: [ 'must be an integer' ]
             }
           end
 

@@ -1,4 +1,4 @@
-require 'circuitbox/faraday_middleware'
+require "circuitbox/faraday_middleware"
 
 module Api
   module Cars
@@ -26,9 +26,9 @@ module Api
     #
     #         Circuitbox will return nil for failed requests and open circuits.
     class RecommendedService
-      CACHE_KEY_PREFIX = 'recommended_cars_for_user_'
+      CACHE_KEY_PREFIX = "recommended_cars_for_user_"
       CACHE_EXPIRES_IN = 1.hour
-      CIRCUIT_NAME = 'recommended_cars'
+      CIRCUIT_NAME = "recommended_cars"
       FALLBACK_VALUE = [].freeze
 
       def initialize(user_id)
@@ -39,7 +39,7 @@ module Api
         cached_data = Rails.cache.read(cache_key)
         return cached_data if cached_data
 
-        result = Circuitbox.circuit(CIRCUIT_NAME, exceptions: [StandardError]).run do
+        result = Circuitbox.circuit(CIRCUIT_NAME, exceptions: [ StandardError ]).run do
           do_request
         end
         Rails.cache.write(cache_key, result, expires_in: CACHE_EXPIRES_IN) if result.present?
@@ -52,7 +52,7 @@ module Api
       attr_reader :user_id
 
       def do_request
-        response = connection.get('/recomended_cars.json', user_id:)
+        response = connection.get("/recomended_cars.json", user_id:)
 
         begin
           JSON.parse(response.body)

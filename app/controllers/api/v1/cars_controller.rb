@@ -1,7 +1,7 @@
 module Api
   module V1
     class CarsController < ApplicationController
-      before_action :set_user, only: [:index]
+      before_action :set_user, only: [ :index ]
 
       def index
         result = Api::Cars::IndexInteractor.new(@user, allowed_params.to_h).call

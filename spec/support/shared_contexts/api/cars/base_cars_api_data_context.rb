@@ -15,7 +15,7 @@ RSpec.shared_context 'with base cars API data' do
   end
   let(:mocked_recommended_cars) do
     [
-      {"car_id" => car.id, "rank_score" => 0.777}
+      { "car_id" => car.id, "rank_score" => 0.777 }
     ]
   end
   let(:brand) { create(:brand, name: 'Volvo') }

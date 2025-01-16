@@ -63,7 +63,7 @@ module Api
       attr_reader :brand_name_q, :price_min, :price_max, :current_page
 
       def brand_name_q_sql
-        return '' if brand_name_q.blank?
+        return "" if brand_name_q.blank?
 
         <<-SQL.squish
           AND name ILIKE CONCAT('%', :brand_name_q, '%')
@@ -71,14 +71,14 @@ module Api
       end
 
       def price_between_sql
-        return '' unless price_min || price_max
+        return "" unless price_min || price_max
 
         rule = if price_min && price_max
-          'BETWEEN :price_min AND :price_max'
+          "BETWEEN :price_min AND :price_max"
         elsif price_min
-          '>= :price_min'
+          ">= :price_min"
         elsif price_max
-          '<= :price_max'
+          "<= :price_max"
         end
 
         <<-SQL.squish
