@@ -12,19 +12,6 @@ RSpec.describe Api::Cars::IndexInteractor do
 
     context 'success' do
       let(:result) { interactor_call.value! }
-      let(:expected_data) do
-        [
-          {
-            "id" => car.id,
-            "brand_id" => brand.id,
-            "brand_name" => brand.name,
-            "price" => car.price,
-            "model" => car.model,
-            "rank_score" => 0.777,
-            "label" => 'perfect_match'
-          }
-        ]
-      end
 
       shared_examples 'returns data and has success state' do
         specify do

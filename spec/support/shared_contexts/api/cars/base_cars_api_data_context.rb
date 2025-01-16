@@ -19,6 +19,20 @@ RSpec.shared_context 'with base cars API data' do
     ]
   end
   let(:brand) { create(:brand, name: 'Volvo') }
+  let(:expected_data) do
+    [
+      {
+        "id" => car.id,
+        "brand_id" => brand.id,
+        "brand_name" => brand.name,
+        "price" => car.price,
+        "model" => car.model,
+        "rank_score" => 0.777,
+        "label" => 'perfect_match'
+      }
+    ]
+  end
+
   let!(:car) { create(:car, brand:, model: 'S70', price: 30_000) }
 
   before do
