@@ -8,7 +8,7 @@ We are going to use standart REST API approach.
 
 Endpoint: `/api/v1/users/:user_id/cars.json`
 
-Controller (Api::V1::CarsController)[https://github.com/rusllonrails/cars_api/blob/main/app/controllers/api/v1/cars_controller.rb]
+Controller [Api::V1::CarsController](https://github.com/rusllonrails/cars_api/blob/main/app/controllers/api/v1/cars_controller.rb)
 
 In controller level we have [Api::Cars::IndexInteractor](https://github.com/rusllonrails/cars_api/blob/main/app/interactors/api/cars/index_interactor.rb).
 
