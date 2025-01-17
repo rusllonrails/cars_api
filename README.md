@@ -8,7 +8,28 @@ https://github.com/Bravado-network/backend_test_assignment/blob/master/README.md
 
 Endpoint: `/api/v1/users/:user_id/cars.json`
 
-:arrow_right: In [Api::V1::CarsController](https://github.com/rusllonrails/cars_api/blob/main/app/controllers/api/v1/cars_controller.rb) level we have [Api::Cars::IndexInteractor](https://github.com/rusllonrails/cars_api/blob/main/app/interactors/api/cars/index_interactor.rb).
+:arrow_right: In [Api::V1::CarsController](https://github.com/rusllonrails/cars_api/blob/main/app/controllers/api/v1/cars_controller.rb) level we have [Api::Cars::IndexInteractor](https://github.com/rusllonrails/cars_api/blob/main/app/interactors/api/cars/index_interactor.rb):
+
+```ruby
+class IndexInteractor < ApplicationInteractor
+  def call
+    yield validate_contract
+
+    Success(
+      Api::Cars::Finder.new(user, attributes).call
+    )
+  end
+
+  private
+
+  def validate_contract
+    result = Api::Cars::IndexContract.new.call(attributes)
+    return Success() if result.success?
+
+    Failure(errors: result.errors.to_h)
+  end
+end
+```
 
 All input params will be validated by [Api::Cars::IndexContract](https://github.com/rusllonrails/cars_api/blob/main/app/contracts/api/cars/index_contract.rb).
 
