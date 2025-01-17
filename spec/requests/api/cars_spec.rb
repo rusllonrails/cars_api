@@ -26,7 +26,9 @@ RSpec.describe 'GET /api/v1/users/:user_id/cars', type: :request do
     end
 
     specify do
-      get_request
+      VCR.use_cassette('api/cars/index/valid_response', match_requests_on:) do
+        get_request
+      end
 
       expect(response).to have_http_status(:ok)
       expect(parsed_response).to match(expected_data)
@@ -34,26 +36,30 @@ RSpec.describe 'GET /api/v1/users/:user_id/cars', type: :request do
   end
 
   describe 'failures' do
-    let(:attributes) do
-      {
-        price_min: '2faKe',
-        price_max: 'MadMax'
-      }
-    end
-    let(:errors) do
-      {
-        price_max: [ 'must be an integer' ],
-        price_min: [ 'must be an integer' ]
-      }.with_indifferent_access
-    end
+    context 'with invalid params' do
+      let(:attributes) do
+        {
+          price_min: '2faKe',
+          price_max: 'MadMax'
+        }
+      end
+      let(:errors) do
+        {
+          price_max: [ 'must be an integer' ],
+          price_min: [ 'must be an integer' ]
+        }.with_indifferent_access
+      end
 
-    specify do
-      get_request
+      specify do
+        VCR.use_cassette('api/cars/index/valid_response', match_requests_on:) do
+          get_request
+        end
 
-      expect(response).to have_http_status(:unprocessable_entity)
-      expect(parsed_response).to match(
-        'errors' => errors
-      )
+        expect(response).to have_http_status(:unprocessable_entity)
+        expect(parsed_response).to match(
+          'errors' => errors
+        )
+      end
     end
   end
 
