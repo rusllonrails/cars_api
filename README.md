@@ -8,6 +8,12 @@ https://github.com/Bravado-network/backend_test_assignment/blob/master/README.md
 
 Endpoint: `/api/v1/users/:user_id/cars.json`
 
+# Workflow Diagram
+
+![Workflow](https://github.com/rusllonrails/cars_api/blob/main/docs/diagrams/cars_api_workflow.png)
+
+# Implementation Details
+
 :arrow_right: In [Api::V1::CarsController](https://github.com/rusllonrails/cars_api/blob/main/app/controllers/api/v1/cars_controller.rb) level we have [Api::Cars::IndexInteractor](https://github.com/rusllonrails/cars_api/blob/main/app/interactors/api/cars/index_interactor.rb):
 
 ```ruby
