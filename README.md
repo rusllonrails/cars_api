@@ -33,7 +33,7 @@ end
 
 All input params will be validated by [Api::Cars::IndexContract](https://github.com/rusllonrails/cars_api/blob/main/app/contracts/api/cars/index_contract.rb).
 
-:arrow_right: If params are valid - we are performing SQL query without ORM via [Api::Cars::Finder](https://github.com/rusllonrails/cars_api/blob/main/app/queries/api/cars/finder.rb) and [Api::Cars::FinderSql](https://github.com/rusllonrails/cars_api/blob/main/app/queries/api/cars/finder_sql.rb).
+:arrow_right: If params are valid - we are performing SQL query (without ORM) via [Api::Cars::Finder](https://github.com/rusllonrails/cars_api/blob/main/app/queries/api/cars/finder.rb) and [Api::Cars::FinderSql](https://github.com/rusllonrails/cars_api/blob/main/app/queries/api/cars/finder_sql.rb).
 
 **Example of SQL:**
 ```sql
@@ -88,6 +88,8 @@ response:
 [{"id":52,"brand":{"id":9,"name":"Chrysler"},"model":"Avenger","price":52452,"rank_score":null,"label":null}]
 ```
 
+:arrow_right: If params are invalid - we are returning detailed errors.
+
 **Example of Failed Request:**
 
 `http://127.0.0.1:3000/api/v1/users/1/cars.json?page=1&price_min=fakemin&price_max=fakemax&query=Chrysler`
@@ -95,4 +97,42 @@ response:
 response:
 ```
 {"errors":{"price_min":["must be an integer"],"price_max":["must be an integer"]}}
+```
+
+:arrow_right: For getting of recommended cars from Third-party API endpoint (`https://bravado-images-production.s3.amazonaws.com/recomended_cars.json?user_id=<USER_ID>`) we implemented [Api::Cars::RecommendedService](https://github.com/rusllonrails/cars_api/blob/main/app/services/api/cars/recommended_service.rb)
+
+**Logic of service:**
+
+* 1: return cached data if it was previously cached
+
+* 2: do request to API if data is missing in cache
+
+* 3: cache and return parsed data if response was valid or return fallback value if not
+
+**Note 1:** cache expiration period is 1 hour.
+
+**Note 2:** we are using the Circuit Breaker design pattern.
+It allows to prevent system from making unnecessary requests to external services when they are known to be failing.
+
+Using a circuits defaults once more than 5 requests have been made with a 50% failure rate, Circuitbox stops sending requests to that failing service for 90 seconds.
+Circuitbox will return nil for failed requests and open circuits.
+
+```ruby
+class RecommendedService
+  def initialize(user_id)
+    @user_id = user_id
+  end
+
+  def call
+    cached_data = Rails.cache.read(cache_key)
+    return cached_data if cached_data
+
+    result = Circuitbox.circuit(CIRCUIT_NAME, exceptions: [ StandardError ]).run do
+      do_request
+    end
+    Rails.cache.write(cache_key, result, expires_in: CACHE_EXPIRES_IN) if result.present?
+
+    result || FALLBACK_VALUE
+  end
+end
 ```
