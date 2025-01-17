@@ -66,7 +66,7 @@ module Api
         return "" if brand_name_q.blank?
 
         <<-SQL.squish
-          AND name ILIKE CONCAT('%', :brand_name_q, '%')
+          AND brands.name ILIKE CONCAT('%', :brand_name_q, '%')
         SQL
       end
 
@@ -89,7 +89,7 @@ module Api
       def offset
         return DEFAULT_OFFSET unless current_page
 
-        (current_page - 1) * DEFAULT_LIMIT
+        (current_page.to_i - 1) * DEFAULT_LIMIT
       end
     end
   end
