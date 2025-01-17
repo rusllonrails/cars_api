@@ -78,3 +78,21 @@ ORDER BY
 LIMIT 20
 OFFSET 0
 ```
+
+**Example of Success Request:**
+
+`http://127.0.0.1:3000/api/v1/users/1/cars.json?page=1&price_min=50000&price_max=60000&query=Chrysler`
+
+response:
+```
+[{"id":52,"brand":{"id":9,"name":"Chrysler"},"model":"Avenger","price":52452,"rank_score":null,"label":null}]
+```
+
+**Example of Failed Request:**
+
+`http://127.0.0.1:3000/api/v1/users/1/cars.json?page=1&price_min=fakemin&price_max=fakemax&query=Chrysler`
+
+response:
+```
+{"errors":{"price_min":["must be an integer"],"price_max":["must be an integer"]}}
+```
