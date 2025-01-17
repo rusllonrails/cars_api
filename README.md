@@ -7,7 +7,8 @@ https://github.com/Bravado-network/backend_test_assignment/blob/master/README.md
 We are going to use standart REST API approach.
 
 Endpoint: `/api/v1/users/:user_id/cars.json`
-Controller (app/controllers/api/v1/cars_controller.rb)[https://github.com/rusllonrails/cars_api/blob/main/app/controllers/api/v1/cars_controller.rb]
+
+Controller (Api::V1::CarsController)[https://github.com/rusllonrails/cars_api/blob/main/app/controllers/api/v1/cars_controller.rb]
 
 In controller level we have [Api::Cars::IndexInteractor](https://github.com/rusllonrails/cars_api/blob/main/app/interactors/api/cars/index_interactor.rb).
 
@@ -16,7 +17,7 @@ All input params will be validated by [Api::Cars::IndexContract](https://github.
 If params are valid - we are performing SQL query without ORM via [Api::Cars::Finder](https://github.com/rusllonrails/cars_api/blob/main/app/queries/api/cars/finder.rb) and [Api::Cars::FinderSql](https://github.com/rusllonrails/cars_api/blob/main/app/queries/api/cars/finder_sql.rb).
 
 Example of SQL:
-```
+```sql
 WITH recommended_cars_data AS (
   SELECT *
   FROM json_populate_recordset(
