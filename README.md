@@ -14,7 +14,7 @@ All input params will be validated by [Api::Cars::IndexContract](https://github.
 
 If params are valid - we are performing SQL query without ORM via [Api::Cars::Finder](https://github.com/rusllonrails/cars_api/blob/main/app/queries/api/cars/finder.rb) and [Api::Cars::FinderSql](https://github.com/rusllonrails/cars_api/blob/main/app/queries/api/cars/finder_sql.rb).
 
-*Example of SQL:*
+**Example of SQL:**
 ```sql
 WITH recommended_cars_data AS (
   SELECT *
