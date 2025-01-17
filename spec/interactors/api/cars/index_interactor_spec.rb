@@ -34,9 +34,20 @@ RSpec.describe Api::Cars::IndexInteractor do
     end
 
     describe 'failures' do
-      shared_examples 'returns failure' do
+      context 'with invalid attributes' do
+        let(:attributes) do
+          {
+            price_min: '2faKe',
+            price_max: 'MadMax'
+          }
+        end
         let(:expected_errors) do
-          { errors: errors }
+          {
+            errors: {
+              price_max: [ 'must be an integer' ],
+              price_min: [ 'must be an integer' ]
+            }
+          }
         end
 
         specify do
@@ -44,25 +55,6 @@ RSpec.describe Api::Cars::IndexInteractor do
             expect(interactor_call).to be_failure
             expect(interactor_call.failure).to eq(expected_errors)
           end
-        end
-      end
-
-      context 'with invalid attributes' do
-        context 'when courier working period is invalid' do
-          let(:attributes) do
-            {
-              price_min: '2faKe',
-              price_max: 'MadMax'
-            }
-          end
-          let(:errors) do
-            {
-              price_max: [ 'must be an integer' ],
-              price_min: [ 'must be an integer' ]
-            }
-          end
-
-          it_behaves_like 'returns failure'
         end
       end
     end
