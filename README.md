@@ -4,13 +4,11 @@ https://github.com/Bravado-network/backend_test_assignment/blob/master/README.md
 
 # Proposed Solution
 
-We are going to use standart REST API approach.
+We are going to use standard REST API approach.
 
 Endpoint: `/api/v1/users/:user_id/cars.json`
 
-Controller [Api::V1::CarsController](https://github.com/rusllonrails/cars_api/blob/main/app/controllers/api/v1/cars_controller.rb)
-
-In controller level we have [Api::Cars::IndexInteractor](https://github.com/rusllonrails/cars_api/blob/main/app/interactors/api/cars/index_interactor.rb).
+In [Api::V1::CarsController](https://github.com/rusllonrails/cars_api/blob/main/app/controllers/api/v1/cars_controller.rb) level we have [Api::Cars::IndexInteractor](https://github.com/rusllonrails/cars_api/blob/main/app/interactors/api/cars/index_interactor.rb).
 
 All input params will be validated by [Api::Cars::IndexContract](https://github.com/rusllonrails/cars_api/blob/main/app/contracts/api/cars/index_contract.rb).
 
