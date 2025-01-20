@@ -101,5 +101,159 @@ RSpec.describe Api::Cars::Finder do
 
       it_behaves_like 'returns properly filtered and sorted data'
     end
+
+    context 'with price_min filter' do
+      let(:attributes) do
+        {
+          price_min: 35_000
+        }
+      end
+      let(:expected_data) do
+        [
+          {
+            "id" => car_toyota.id,
+            "brand_id" => brand_toyota.id,
+            "brand_name" => brand_toyota.name,
+            "price" => car_toyota.price,
+            "model" => car_toyota.model,
+            "rank_score" => 0.777,
+            "label" => 'good_match'
+          },
+          {
+            "id" => car_honda.id,
+            "brand_id" => brand_honda.id,
+            "brand_name" => brand_honda.name,
+            "price" => car_honda.price,
+            "model" => car_honda.model,
+            "rank_score" => 0.431,
+            "label" => nil
+          }
+        ]
+      end
+
+      it_behaves_like 'returns properly filtered and sorted data'
+    end
+
+    context 'with price_max filter' do
+      let(:attributes) do
+        {
+          price_max: 25_000
+        }
+      end
+      let(:expected_data) do
+        [
+          {
+            "id" => car_honda_civic.id,
+            "brand_id" => brand_honda.id,
+            "brand_name" => brand_honda.name,
+            "price" => car_honda_civic.price,
+            "model" => car_honda_civic.model,
+            "rank_score" => 0.334,
+            "label" => nil
+          },
+          {
+            "id" => car_mazda.id,
+            "brand_id" => brand_mazda.id,
+            "brand_name" => brand_mazda.name,
+            "price" => car_mazda.price,
+            "model" => car_mazda.model,
+            "rank_score" => 0.334,
+            "label" => nil
+          }
+        ]
+      end
+
+      it_behaves_like 'returns properly filtered and sorted data'
+    end
+
+    context 'with price_min and price_max filters' do
+      let(:attributes) do
+        {
+          price_min: 24_000,
+          price_max: 31_000
+        }
+      end
+      let(:expected_data) do
+        [
+          {
+            "id" => car_volvo.id,
+            "brand_id" => brand_volvo.id,
+            "brand_name" => brand_volvo.name,
+            "price" => car_volvo.price,
+            "model" => car_volvo.model,
+            "rank_score" => 0.134,
+            "label" => 'perfect_match'
+          },
+          {
+            "id" => car_mazda.id,
+            "brand_id" => brand_mazda.id,
+            "brand_name" => brand_mazda.name,
+            "price" => car_mazda.price,
+            "model" => car_mazda.model,
+            "rank_score" => 0.334,
+            "label" => nil
+          }
+        ]
+      end
+
+      it_behaves_like 'returns properly filtered and sorted data'
+    end
+
+    context 'with query, price_min and price_max filters' do
+      let(:attributes) do
+        {
+          query: 'aZd',
+          price_min: 24_000,
+          price_max: 31_000
+        }
+      end
+      let(:expected_data) do
+        [
+          {
+            "id" => car_mazda.id,
+            "brand_id" => brand_mazda.id,
+            "brand_name" => brand_mazda.name,
+            "price" => car_mazda.price,
+            "model" => car_mazda.model,
+            "rank_score" => 0.334,
+            "label" => nil
+          }
+        ]
+      end
+
+      it_behaves_like 'returns properly filtered and sorted data'
+    end
+
+    context 'with just query filter' do
+      let(:attributes) do
+        {
+          query: 'ond'
+        }
+      end
+      let(:expected_data) do
+        [
+          {
+            "id" => car_honda.id,
+            "brand_id" => brand_honda.id,
+            "brand_name" => brand_honda.name,
+            "price" => car_honda.price,
+            "model" => car_honda.model,
+            "rank_score" => 0.431,
+            "label" => nil
+          },
+          {
+            "id" => car_honda_civic.id,
+            "brand_id" => brand_honda.id,
+            "brand_name" => brand_honda.name,
+            "price" => car_honda_civic.price,
+            "model" => car_honda_civic.model,
+            "rank_score" => 0.334,
+            "label" => nil
+          }
+        ]
+      end
+
+      it_behaves_like 'returns properly filtered and sorted data'
+    end
   end
 end
