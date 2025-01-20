@@ -1,4 +1,6 @@
 RSpec.shared_context 'with base cars API data' do
+  include_context 'with mocked response of recommended cars'
+
   let(:user) do
     record = create(:user, preferred_price_range: 25000...31000)
     record.preferred_brands << brand
@@ -34,11 +36,4 @@ RSpec.shared_context 'with base cars API data' do
   end
 
   let!(:car) { create(:car, brand:, model: 'S70', price: 30_000) }
-
-  before do
-    api_instance = instance_double(
-      Api::Cars::RecommendedService, call: mocked_recommended_cars
-    )
-    allow(Api::Cars::RecommendedService).to receive(:new).and_return(api_instance)
-  end
 end
