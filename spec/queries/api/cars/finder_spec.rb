@@ -7,7 +7,7 @@ RSpec.describe Api::Cars::Finder do
   subject(:finder) { Api::Cars::Finder.new(user, attributes) }
 
   let(:user) do
-    record = create(:user, preferred_price_range: )
+    record = create(:user, preferred_price_range:)
     record.preferred_brands << brand_volvo
     record.preferred_brands << brand_toyota
 
