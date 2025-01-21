@@ -39,6 +39,62 @@ RSpec.describe Api::Cars::Finder do
   describe '#call' do
     subject(:finder_call) { finder.call }
 
+    let(:car_volvo_attrs) do
+      {
+        "id" => car_volvo.id,
+        "brand_id" => brand_volvo.id,
+        "brand_name" => brand_volvo.name,
+        "price" => car_volvo.price,
+        "model" => car_volvo.model,
+        "rank_score" => 0.134,
+        "label" => 'perfect_match'
+      }
+    end
+    let(:car_toyota_attrs) do
+      {
+        "id" => car_toyota.id,
+        "brand_id" => brand_toyota.id,
+        "brand_name" => brand_toyota.name,
+        "price" => car_toyota.price,
+        "model" => car_toyota.model,
+        "rank_score" => 0.777,
+        "label" => 'good_match'
+      }
+    end
+    let(:car_honda_attrs) do
+      {
+        "id" => car_honda.id,
+        "brand_id" => brand_honda.id,
+        "brand_name" => brand_honda.name,
+        "price" => car_honda.price,
+        "model" => car_honda.model,
+        "rank_score" => 0.431,
+        "label" => nil
+      }
+    end
+    let(:car_honda_civic_attrs) do
+      {
+        "id" => car_honda_civic.id,
+        "brand_id" => brand_honda.id,
+        "brand_name" => brand_honda.name,
+        "price" => car_honda_civic.price,
+        "model" => car_honda_civic.model,
+        "rank_score" => 0.334,
+        "label" => nil
+      }
+    end
+    let(:car_mazda_attrs) do
+      {
+        "id" => car_mazda.id,
+        "brand_id" => brand_mazda.id,
+        "brand_name" => brand_mazda.name,
+        "price" => car_mazda.price,
+        "model" => car_mazda.model,
+        "rank_score" => 0.334,
+        "label" => nil
+      }
+    end
+
     shared_examples 'returns properly filtered and sorted data' do
       specify do
         VCR.use_cassette('api/cars/index/valid_response', match_requests_on:) do
@@ -51,51 +107,11 @@ RSpec.describe Api::Cars::Finder do
       let(:attributes) { {} }
       let(:expected_data) do
         [
-          {
-            "id" => car_volvo.id,
-            "brand_id" => brand_volvo.id,
-            "brand_name" => brand_volvo.name,
-            "price" => car_volvo.price,
-            "model" => car_volvo.model,
-            "rank_score" => 0.134,
-            "label" => 'perfect_match'
-          },
-          {
-            "id" => car_toyota.id,
-            "brand_id" => brand_toyota.id,
-            "brand_name" => brand_toyota.name,
-            "price" => car_toyota.price,
-            "model" => car_toyota.model,
-            "rank_score" => 0.777,
-            "label" => 'good_match'
-          },
-          {
-            "id" => car_honda.id,
-            "brand_id" => brand_honda.id,
-            "brand_name" => brand_honda.name,
-            "price" => car_honda.price,
-            "model" => car_honda.model,
-            "rank_score" => 0.431,
-            "label" => nil
-          },
-          {
-            "id" => car_honda_civic.id,
-            "brand_id" => brand_honda.id,
-            "brand_name" => brand_honda.name,
-            "price" => car_honda_civic.price,
-            "model" => car_honda_civic.model,
-            "rank_score" => 0.334,
-            "label" => nil
-          },
-          {
-            "id" => car_mazda.id,
-            "brand_id" => brand_mazda.id,
-            "brand_name" => brand_mazda.name,
-            "price" => car_mazda.price,
-            "model" => car_mazda.model,
-            "rank_score" => 0.334,
-            "label" => nil
-          }
+          car_volvo_attrs,
+          car_toyota_attrs,
+          car_honda_attrs,
+          car_honda_civic_attrs,
+          car_mazda_attrs
         ]
       end
 
@@ -110,24 +126,8 @@ RSpec.describe Api::Cars::Finder do
       end
       let(:expected_data) do
         [
-          {
-            "id" => car_toyota.id,
-            "brand_id" => brand_toyota.id,
-            "brand_name" => brand_toyota.name,
-            "price" => car_toyota.price,
-            "model" => car_toyota.model,
-            "rank_score" => 0.777,
-            "label" => 'good_match'
-          },
-          {
-            "id" => car_honda.id,
-            "brand_id" => brand_honda.id,
-            "brand_name" => brand_honda.name,
-            "price" => car_honda.price,
-            "model" => car_honda.model,
-            "rank_score" => 0.431,
-            "label" => nil
-          }
+          car_toyota_attrs,
+          car_honda_attrs
         ]
       end
 
@@ -142,24 +142,8 @@ RSpec.describe Api::Cars::Finder do
       end
       let(:expected_data) do
         [
-          {
-            "id" => car_honda_civic.id,
-            "brand_id" => brand_honda.id,
-            "brand_name" => brand_honda.name,
-            "price" => car_honda_civic.price,
-            "model" => car_honda_civic.model,
-            "rank_score" => 0.334,
-            "label" => nil
-          },
-          {
-            "id" => car_mazda.id,
-            "brand_id" => brand_mazda.id,
-            "brand_name" => brand_mazda.name,
-            "price" => car_mazda.price,
-            "model" => car_mazda.model,
-            "rank_score" => 0.334,
-            "label" => nil
-          }
+          car_honda_civic_attrs,
+          car_mazda_attrs
         ]
       end
 
@@ -175,24 +159,8 @@ RSpec.describe Api::Cars::Finder do
       end
       let(:expected_data) do
         [
-          {
-            "id" => car_volvo.id,
-            "brand_id" => brand_volvo.id,
-            "brand_name" => brand_volvo.name,
-            "price" => car_volvo.price,
-            "model" => car_volvo.model,
-            "rank_score" => 0.134,
-            "label" => 'perfect_match'
-          },
-          {
-            "id" => car_mazda.id,
-            "brand_id" => brand_mazda.id,
-            "brand_name" => brand_mazda.name,
-            "price" => car_mazda.price,
-            "model" => car_mazda.model,
-            "rank_score" => 0.334,
-            "label" => nil
-          }
+          car_volvo_attrs,
+          car_mazda_attrs
         ]
       end
 
@@ -209,15 +177,7 @@ RSpec.describe Api::Cars::Finder do
       end
       let(:expected_data) do
         [
-          {
-            "id" => car_mazda.id,
-            "brand_id" => brand_mazda.id,
-            "brand_name" => brand_mazda.name,
-            "price" => car_mazda.price,
-            "model" => car_mazda.model,
-            "rank_score" => 0.334,
-            "label" => nil
-          }
+          car_mazda_attrs
         ]
       end
 
@@ -232,24 +192,8 @@ RSpec.describe Api::Cars::Finder do
       end
       let(:expected_data) do
         [
-          {
-            "id" => car_honda.id,
-            "brand_id" => brand_honda.id,
-            "brand_name" => brand_honda.name,
-            "price" => car_honda.price,
-            "model" => car_honda.model,
-            "rank_score" => 0.431,
-            "label" => nil
-          },
-          {
-            "id" => car_honda_civic.id,
-            "brand_id" => brand_honda.id,
-            "brand_name" => brand_honda.name,
-            "price" => car_honda_civic.price,
-            "model" => car_honda_civic.model,
-            "rank_score" => 0.334,
-            "label" => nil
-          }
+          car_honda_attrs,
+          car_honda_civic_attrs
         ]
       end
 
