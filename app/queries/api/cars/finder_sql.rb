@@ -53,7 +53,7 @@ module Api
             END,
             rank_score DESC NULLS LAST,
             price ASC
-          LIMIT #{DEFAULT_LIMIT}
+          LIMIT #{limit}
           OFFSET #{offset}
         SQL
       end
@@ -89,7 +89,13 @@ module Api
       def offset
         return DEFAULT_OFFSET unless current_page
 
-        (current_page.to_i - 1) * DEFAULT_LIMIT
+        (current_page.to_i - 1) * limit
+      end
+
+      def limit
+        return ENV["CARS_API_LIMIT"].to_i if ENV["CARS_API_LIMIT"]
+
+        DEFAULT_LIMIT
       end
     end
   end

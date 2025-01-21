@@ -118,86 +118,205 @@ RSpec.describe Api::Cars::Finder do
       it_behaves_like 'returns properly filtered and sorted data'
     end
 
-    context 'with price_min filter' do
-      let(:attributes) do
-        {
-          price_min: 35_000
-        }
-      end
-      let(:expected_data) do
-        [
-          car_toyota_attrs,
-          car_honda_attrs
-        ]
+    describe 'price filters' do
+      context 'with price_min filter' do
+        let(:attributes) do
+          {
+            price_min: 35_000
+          }
+        end
+        let(:expected_data) do
+          [
+            car_toyota_attrs,
+            car_honda_attrs
+          ]
+        end
+
+        it_behaves_like 'returns properly filtered and sorted data'
       end
 
-      it_behaves_like 'returns properly filtered and sorted data'
+      context 'with price_max filter' do
+        let(:attributes) do
+          {
+            price_max: 25_000
+          }
+        end
+        let(:expected_data) do
+          [
+            car_honda_civic_attrs,
+            car_mazda_attrs
+          ]
+        end
+
+        it_behaves_like 'returns properly filtered and sorted data'
+      end
+
+      context 'with price_min and price_max filters' do
+        let(:attributes) do
+          {
+            price_min: 24_000,
+            price_max: 31_000
+          }
+        end
+        let(:expected_data) do
+          [
+            car_volvo_attrs,
+            car_mazda_attrs
+          ]
+        end
+
+        it_behaves_like 'returns properly filtered and sorted data'
+      end
+
+      context 'with query, price_min and price_max filters' do
+        let(:attributes) do
+          {
+            query: 'aZd',
+            price_min: 24_000,
+            price_max: 31_000
+          }
+        end
+        let(:expected_data) do
+          [
+            car_mazda_attrs
+          ]
+        end
+
+        it_behaves_like 'returns properly filtered and sorted data'
+      end
     end
 
-    context 'with price_max filter' do
-      let(:attributes) do
-        {
-          price_max: 25_000
-        }
-      end
-      let(:expected_data) do
-        [
-          car_honda_civic_attrs,
-          car_mazda_attrs
-        ]
+    describe 'query filter' do
+      context 'when query is part of brand name' do
+        let(:attributes) do
+          {
+            query: 'onD'
+          }
+        end
+        let(:expected_data) do
+          [
+            car_honda_attrs,
+            car_honda_civic_attrs
+          ]
+        end
+
+        it_behaves_like 'returns properly filtered and sorted data'
       end
 
-      it_behaves_like 'returns properly filtered and sorted data'
+      context 'when query starts with brand name' do
+        let(:attributes) do
+          {
+            query: 'mAZD'
+          }
+        end
+        let(:expected_data) do
+          [
+            car_mazda_attrs
+          ]
+        end
+
+        it_behaves_like 'returns properly filtered and sorted data'
+      end
+
+      context 'when query ends with brand name' do
+        let(:attributes) do
+          {
+            query: 'zDA'
+          }
+        end
+        let(:expected_data) do
+          [
+            car_mazda_attrs
+          ]
+        end
+
+        it_behaves_like 'returns properly filtered and sorted data'
+      end
     end
 
-    context 'with price_min and price_max filters' do
-      let(:attributes) do
-        {
-          price_min: 24_000,
-          price_max: 31_000
-        }
-      end
-      let(:expected_data) do
-        [
-          car_volvo_attrs,
-          car_mazda_attrs
-        ]
+    describe 'page filter' do
+      context 'without filters' do
+        around { |spec| set_sql_limit(spec, 3) }
+
+        context 'when page is 1' do
+          let(:attributes) do
+            {
+              page: 1
+            }
+          end
+          let(:expected_data) do
+            [
+              car_volvo_attrs,
+              car_toyota_attrs,
+              car_honda_attrs
+            ]
+          end
+
+          it_behaves_like 'returns properly filtered and sorted data'
+        end
+
+        context 'when page is 2' do
+          let(:attributes) do
+            {
+              page: 2
+            }
+          end
+          let(:expected_data) do
+            [
+              car_honda_civic_attrs,
+              car_mazda_attrs
+            ]
+          end
+
+          it_behaves_like 'returns properly filtered and sorted data'
+        end
       end
 
-      it_behaves_like 'returns properly filtered and sorted data'
+      context 'with other filters' do
+        let(:base_filters) do
+          {
+            query: 'HonDa',
+            price_min: 23_000,
+            price_max: 41_000
+          }
+        end
+
+        around { |spec| set_sql_limit(spec, 1) }
+
+        context 'when page is 1' do
+          let(:attributes) do
+            base_filters.merge(page: 1)
+          end
+          let(:expected_data) do
+            [
+              car_honda_attrs
+            ]
+          end
+
+          it_behaves_like 'returns properly filtered and sorted data'
+        end
+
+        context 'when page is 2' do
+          let(:attributes) do
+            base_filters.merge(page: 2)
+          end
+          let(:expected_data) do
+            [
+              car_honda_civic_attrs
+            ]
+          end
+
+          it_behaves_like 'returns properly filtered and sorted data'
+        end
+      end
     end
+  end
 
-    context 'with query, price_min and price_max filters' do
-      let(:attributes) do
-        {
-          query: 'aZd',
-          price_min: 24_000,
-          price_max: 31_000
-        }
-      end
-      let(:expected_data) do
-        [
-          car_mazda_attrs
-        ]
-      end
+  private
 
-      it_behaves_like 'returns properly filtered and sorted data'
-    end
-
-    context 'with just query filter' do
-      let(:attributes) do
-        {
-          query: 'ond'
-        }
-      end
-      let(:expected_data) do
-        [
-          car_honda_attrs,
-          car_honda_civic_attrs
-        ]
-      end
-
-      it_behaves_like 'returns properly filtered and sorted data'
-    end
+  def set_sql_limit(spec, value)
+    ENV["CARS_API_LIMIT"] = value.to_s
+    spec.run
+    ENV.delete("CARS_API_LIMIT")
   end
 end
