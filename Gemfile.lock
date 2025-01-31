@@ -1,6 +1,6 @@
 GIT
   remote: https://github.com/yammer/circuitbox.git
-  revision: a85df31f89d784f10ded46a1bf272fbd12907841
+  revision: a1c6edb7f0368ffeb60becd0d341beabfc1507db
   specs:
     circuitbox (2.0.0)
 
